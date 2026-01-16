@@ -1,54 +1,49 @@
-# Bioinformatics Task Classification and Chat System
+# ADGPT1 — Bioinformatics Task Routing Conversational System
 
-This project is a multi-turn conversational system backed by several fine-tuned LLaMA3 and BERT models. It classifies incoming bioinformatics-related questions and routes them to the appropriate model to generate accurate, context-aware responses.
+ADGPT1 is a multi-turn conversational system designed for **Alzheimer’s disease–oriented bioinformatics research**.  
+The system classifies incoming user questions into **three study types** and dynamically routes them to **specialized fine-tuned models** to generate accurate, context-aware responses.
 
----
-
-## 🔧 Components
-
-### 1. **FastAPI Backend (`app1.py`)**
-A RESTful API that:
-- Accepts user queries via a POST `/chat/` endpoint.
-- Classifies the query into one of four tasks.
-- Dynamically dispatches the query to a corresponding fine-tuned model (LLaMA3 or BERT).
-- Maintains conversation context per user session.
-
-### 2. **Frontend Chat Interface (`chat1.html`)**
-A minimalist HTML+JS page to:
-- Input user queries.
-- Display responses in a chat format.
-- Communicate with the FastAPI backend using `fetch`.
-
-### 3. **Training Scripts**
-#### `llama3_training.py`
-- Fine-tunes the 1B LLaMA3.2 model (`unsloth/Llama-3.2-1B-bnb-4bit`) for task 1 (general bioinformatics Q&A).
-- Input/output formatting using a predefined prompt template.
-
-#### `task_classification_pipeline.py`
-- Fine-tunes a BERT model to classify user questions into four task types.
-- Uses HuggingFace `Trainer` with tokenization and evaluation strategy.
-
-#### `llama3_task3.py`
-- Fine-tunes the 8B LLaMA3.1 model for determining **gene–Alzheimer relationships**.
-- Formats conversations from a SQLite gene database and performs multi-turn prompt generation.
-- Includes BLEU evaluation for generation quality.
-
-#### `llama3_task4.py`
-- Fine-tunes the 8B LLaMA3.1 model for **mediation analysis** tasks.
-- Loads preprocessed conversation data from disk and saves the final model checkpoint.
+> ⚠️ This project is intended for **academic and research use only**.
 
 ---
 
-## 🧠 Tasks Supported
+## ✨ Key Features
 
-| Task ID | Description |
-|---------|-------------|
-|   0     | Invalid question (Filtered out) |
-|   1     | General Bioinformatics QA (LLaMA3.2) |
-|   2     | Binary Gene–Brain Mediation Detection (BERT) |
-|   3     | Multi-turn Alzheimer Mediation Analysis (LLaMA3.1) |
+- Three-task expert routing architecture (Gene / Association / Other study)
+- Fine-tuned LLaMA3-based expert models
+- BERT-based task classifier (router)
+- Multi-turn conversational memory per session
+- Modular FastAPI backend + lightweight frontend
+- Designed for gene–disease (Alzheimer’s) reasoning tasks
 
 ---
+
+## 🧠 Supported Tasks (Updated ADGPT1)
+
+| Task ID | Study Type | Description |
+|---:|---|---|
+| 1 | **Gene study** | Gene-centric biological knowledge (e.g., gene function, chromosome location, expression context, OMIM-style summaries) |
+| 2 | **Association study** | Gene–Alzheimer’s disease association confirmation based on curated molecular genetics evidence |
+| 3 | **Other study** | Other AD-related bioinformatics questions not covered by task 1–2 (e.g., workflow, dataset interpretation, cross-modal analysis) |
+
+Each task is handled by a **dedicated fine-tuned model** optimized for that reasoning style.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+User Query
+    ↓
+Task Classifier (BERT, 3-way)
+    ↓
+┌─────────────┬─────────────────┬─────────────────┐
+│ Gene Study  │ Association     │ Other Study     │
+│ Model       │ Study Model     │ Model           │
+└─────────────┴─────────────────┴─────────────────┘
+    ↓
+Context-Aware Response
+
 
 ## 🗃️ Directory Structure
 
@@ -69,3 +64,5 @@ A minimalist HTML+JS page to:
 │   ├── task2_test_v4.parquet
 │   ├── gene_database_v2.db
 │   └── task34_dataset_V3/
+
+
